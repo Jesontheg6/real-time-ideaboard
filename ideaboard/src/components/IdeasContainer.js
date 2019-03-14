@@ -3,6 +3,7 @@ import axios from 'axios'
 import Idea from './Idea'
 import IdeaForm from './IdeaForm'
 import update from 'immutability-helper'
+import Notification from './Notification'
 
 class IdeasContainer extends Component {
   constructor(props) {
@@ -10,7 +11,8 @@ class IdeasContainer extends Component {
     this.state = {
       ideas: [] ,
       editingIdeaID: null,
-      notification: ''
+      notification: '', 
+      transisitonIn: false
     } 
   }
 
@@ -26,7 +28,6 @@ class IdeasContainer extends Component {
   addNewIdea = () => {
     axios.post('http://localhost:3001/api/v1/ideas', {idea: {title: '', body: ''}})
     .then(response => {
-      console.log(response)
       const ideas = update(this.state.ideas, {$splice: [[0,0, response.data]]})
       // window.alert(JSON.stringify(response.data))
       this.setState({ideas: ideas, editingIdeaID: response.data.id})
@@ -38,10 +39,20 @@ class IdeasContainer extends Component {
   updateIdea = (idea) => {
     const ideaIndex = this.state.ideas.findIndex(x => x.id === idea.id)
     const ideas = update(this.state.ideas, {[ideaIndex]: {$set:idea}})
-    this.setState({ideas: ideas, notification: 'All changes saved'})
+    this.setState({ideas: ideas, notification: 'All changes saved', transitionIn: true})
   }
 
-  resetNotification = () => {this.setState({notification: ''})}
+  deleteIdea = (id) => {
+    axios.delete(`http://localhost:3001/api/v1/ideas/${id}`)
+    .then(response => {
+      const ideaIndex = this.state.ideas.findIndex(x => x.id === id)
+      const ideas = update(this.state.ideas, { $splice: [[ideaIndex, 1]]})
+      this.setState({ideas: ideas})
+    })
+    .catch(error => console.log(error))
+  }
+
+  resetNotification = () => {this.setState({notification: '', transitionIn: false})}
 
   enableEditing = (id) => {
     this.setState({editingIdeaID: id}, () => {this.title.focus() })
@@ -55,9 +66,7 @@ class IdeasContainer extends Component {
           <button className= "newIdeaButton" onClick={this.addNewIdea}>
             New Idea
           </button>
-          <span className="notification">
-            {this.state.notification}
-          </span>
+          <Notification in={this.state.transitionIn} notification={this.state.notification} />
         </div>
         {this.state.ideas.map((idea) => {
           // console.log(`${this.state.editingIdeaID}, ${idea.id}`)
@@ -67,7 +76,8 @@ class IdeasContainer extends Component {
                       titleRef = {input => this.title = input}
                       resetNotification={this.resetNotification} /> )
           } else {
-          return (<Idea idea={idea} key={idea.id} onClick={this.enableEditing} />)
+          return (<Idea idea={idea} key={idea.id} onClick={this.enableEditing}
+                  onDelete={this.deleteIdea} />)
           }
         })}
       </div>
