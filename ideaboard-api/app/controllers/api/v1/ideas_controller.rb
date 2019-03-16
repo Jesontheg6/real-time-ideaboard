@@ -1,5 +1,7 @@
 module Api::V1
   class IdeasController < ApplicationController
+    # before_action :authenticate_user! 
+
   	def index
      	 @ideas = Idea.order("created_at DESC")
       	render json: @ideas
