@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
+import ActionCable from 'actioncable'
 import axios from 'axios' 
 import Idea from './Idea'
 import IdeaForm from './IdeaForm'
 import update from 'immutability-helper'
 import Notification from './Notification'
+import $ from 'jquery';
+
 
 class IdeasContainer extends Component {
   constructor(props) {
@@ -17,16 +20,36 @@ class IdeasContainer extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:3001/api/v1/ideas.json')
-    .then(response => {
-      this.setState({ideas: response.data})
-    })
-    .catch(error => console.log(error))
+    if(sessionStorage.getItem('user')) {
+    $.ajax({
+      type: "GET",
+      url: 'http://localhost:3001/api/v1/ideas',
+      dataType: "JSON",
+      headers: JSON.parse(sessionStorage.getItem('user')),
+    }).done((data) => {
+      this.setState({ideas: data})    
+   }).catch(error => console.log(error))
   }
 
+      window.fetch('http://localhost:3001').then(data => {
+      data.json().then(res => {
+      // this.setState({ ideas: res.idea })
+      
+      // ideas.title
+      // ideas.body
+
+      window.alert(JSON.stringify(res))
+    })
+  })
+  
+    const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
+    this.sub = cable.subscriptions.create('NotesChannel', {
+    received: this.handleReceiveNewIdea
+    })
+  }
 
   addNewIdea = () => {
-    axios.post('http://localhost:3001/api/v1/ideas', {idea: {title: '', body: ''}})
+    axios.post('http://localhost:3001/api/v1/ideas', {idea: {title: '', body: ''}}, {headers: JSON.parse(sessionStorage.getItem('user'))})
     .then(response => {
       const ideas = update(this.state.ideas, {$splice: [[0,0, response.data]]})
       // window.alert(JSON.stringify(response.data))
@@ -36,14 +59,21 @@ class IdeasContainer extends Component {
     .catch(error => console.log(error))
   }
 
+    handleReceiveNewIdea = ({ idea }) => {
+      if (idea !== this.state.ideas) {
+        this.setState({ idea })
+  }
+}
+
   updateIdea = (idea) => {
     const ideaIndex = this.state.ideas.findIndex(x => x.id === idea.id)
     const ideas = update(this.state.ideas, {[ideaIndex]: {$set:idea}})
     this.setState({ideas: ideas, notification: 'All changes saved', transitionIn: true})
+    this.sub.send({ ideas: idea.target.value, id: idea.id})
   }
 
   deleteIdea = (id) => {
-    axios.delete(`http://localhost:3001/api/v1/ideas/${id}`)
+    axios.delete(`http://localhost:3001/api/v1/ideas/${id}` , {headers: JSON.parse(sessionStorage.getItem('user'))})
     .then(response => {
       const ideaIndex = this.state.ideas.findIndex(x => x.id === id)
       const ideas = update(this.state.ideas, { $splice: [[ideaIndex, 1]]})

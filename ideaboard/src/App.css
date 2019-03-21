@@ -61,3 +61,16 @@ textarea {
 .tile:hover .deleteButton {
 	visibility: visible;
 }
+
+.signInForm {
+	width: 30em;
+	margin-top: 3em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.signInButton {
+	margin-top: 1em;
+	background: green;
+	color: white;
+}

@@ -1,34 +1,41 @@
 module Api::V1
   class IdeasController < ApplicationController
-    # before_action :authenticate_user! 
+    before_action :authenticate_user! 
 
   	def index
-     	 @ideas = Idea.order("created_at DESC")
+      if !user_signed_in?
+        redirect_to @authenticate_user
+      else
+     	 @ideas = current_user.ideas.order("created_at DESC")
       	render json: @ideas
    	 end
+    end
 
    	 def create 
-    	@idea = Idea.create(idea_params)
-    	render json: @idea
-    end 
+    	@idea = current_user.ideas.new(idea_params)
+      if @idea.save
+        render json: @idea
+      else 
+        render json: @idea.errors, status: :unprocessable_entity
+      end 
+    end
 
     def update
-    	@idea = Idea.find(params[:id])
+    	@idea = current_user.ideas.find(params[:id])
     	@idea.update_attributes(idea_params)
     	render json: @idea 
     end 
 
     def destroy
-      @idea = Idea.find(params[:id])
+      @idea = current_user.ideas.find(params[:id])
       if @idea.destroy
         head :no_content, status: :ok
       else
-        render json: @idea.errors, status: :unprocessable_entity
+        render json: @ideas.errors, status: :unprocessable_entity
       end
     end
     
-	private
-	
+	private	
 	def idea_params
 		params.require(:idea).permit(:title, :body)
 		end

@@ -18,7 +18,7 @@ handleBlur = () => {
   const idea = {title: this.state.title, body: this.state.body }
   axios.put(
     `http://localhost:3001/api/v1/ideas/${this.props.idea.id}`,
-    {idea: idea}
+    {idea: idea}, {headers: JSON.parse(sessionStorage.getItem('user'))}
     )
   .then(response => {
     console.log(response)
