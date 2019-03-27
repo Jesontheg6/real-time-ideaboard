@@ -7,6 +7,8 @@ import $ from 'jquery';
 import Color from './Color'
 import BoardTitle from './BoardTitle'
 
+import ActionCable from 'actioncable'
+import IdeaForm from './IdeaForm'
 
 
 class IdeasContainer extends Component {
@@ -36,7 +38,23 @@ class IdeasContainer extends Component {
     }).done((data) => {
       this.setState({ideas: data})    
    }).catch(error => console.log(error))
-    }
+  }
+
+      window.fetch('http://localhost:3001').then(data => {
+      data.json().then(res => {
+      // this.setState({ ideas: res.idea })
+      
+      // ideas.title
+      // ideas.body
+
+      window.alert(JSON.stringify(res))
+    })
+  })
+  
+    const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
+    this.sub = cable.subscriptions.create('NotesChannel', {
+    received: this.handleReceiveNewIdea
+    })
   }
 
   addNewIdea = () => {
@@ -50,11 +68,15 @@ class IdeasContainer extends Component {
     .catch(error => console.log(error))
   }
 
+    handleReceiveNewIdea = ({ idea }) => {
+      if (idea !== this.state.ideas) {
+        this.setState({ idea })
+  }
+}
+
   updateIdea = (idea) => {
     const ideaIndex = this.state.ideas.findIndex(x => x.id === idea.id)
     const ideas = update(this.state.ideas, {[ideaIndex]: {$set:idea}})
-          // console.log("BRAYAN: ", ideas);
-
     this.setState({ideas: ideas, notification: 'All changes saved', transitionIn: true})
     this.sub.send({ ideas: idea.target.value, id: idea.id})
   }

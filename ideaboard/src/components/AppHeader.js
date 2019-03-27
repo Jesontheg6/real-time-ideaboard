@@ -7,7 +7,7 @@ export default class AppHeader extends React.Component {
 	componentDidMount () {
 		if (this.props.history.location.pathname !== "/signup")
 		{
-			$.ajax({
+		$.ajax({
 			type: 'GET',
 			url: 'http://localhost:3001/auth/validate_token',
       		dataType: "JSON",

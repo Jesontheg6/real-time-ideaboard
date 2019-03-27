@@ -10,11 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_03_27_040535) do
+=======
+ActiveRecord::Schema.define(version: 2019_03_19_053911) do
+>>>>>>> refs/remotes/origin/master
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+<<<<<<< HEAD
   create_table "boards", force: :cascade do |t|
     t.string "boardtitle"
     t.bigint "idea_id"
@@ -25,13 +30,18 @@ ActiveRecord::Schema.define(version: 2019_03_27_040535) do
     t.index ["user_id"], name: "index_boards_on_user_id"
   end
 
+=======
+>>>>>>> refs/remotes/origin/master
   create_table "ideas", force: :cascade do |t|
     t.string "title"
     t.string "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+<<<<<<< HEAD
     t.string "color"
+=======
+>>>>>>> refs/remotes/origin/master
     t.index ["user_id"], name: "index_ideas_on_user_id"
   end
 
@@ -59,15 +69,22 @@ ActiveRecord::Schema.define(version: 2019_03_27_040535) do
     t.json "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+<<<<<<< HEAD
     t.bigint "board_id"
     t.index ["board_id"], name: "index_users_on_board_id"
+=======
+>>>>>>> refs/remotes/origin/master
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+<<<<<<< HEAD
   add_foreign_key "boards", "ideas"
   add_foreign_key "boards", "users"
   add_foreign_key "ideas", "users"
   add_foreign_key "users", "boards"
+=======
+  add_foreign_key "ideas", "users"
+>>>>>>> refs/remotes/origin/master
 end

@@ -37,7 +37,11 @@ module Api::V1
     
 	private	
 	def idea_params
+<<<<<<< HEAD
 		params.require(:idea).permit(:title, :body, :color)
+=======
+		params.require(:idea).permit(:title, :body)
+>>>>>>> refs/remotes/origin/master
 		end
 	end
 end 

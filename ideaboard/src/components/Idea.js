@@ -1,62 +1,18 @@
 import React, { Component } from 'react'
-import axios from 'axios' 
-
 
 class Idea extends Component {
-	constructor(props) {
-	super(props)
-	this.state = {
-	title:this.props.idea.title,
-	body: this.props.idea.body,
-	color: this.props.idea.color
-  }
-   this.changeBackground = this.changeBackground.bind(this);
- }
 
-changeBackground(color) {
-  console.log('fires changes');
-  this.setState({color});
- }
+	handleClick = () => {this.props.onClick(this.props.idea.id)}
 
-handleInput = (e) => {
-	this.props.resetNotification()
-	this.setState({[e.target.name]: e.target.value})
-}
-
-handleBlur = () => {
-	const idea = {title: this.state.title, body: this.state.body, color: this.state.color}
-  axios.put(
-    `http://localhost:3001/api/v1/ideas/${this.props.idea.id}`,
-    {idea: {title: this.state.title, body: this.state.body, color: this.state.color}}, {headers: JSON.parse(sessionStorage.getItem('user'))}
-    )
-  .then(response => {
-    console.log("HANDLEBLUR RESPONRS:", response)
-    this.props.updateIdea(response.data)
-  })
-  .catch(error => console.log(error))
-}
-
-
-
-handleDelete = () => {this.props.onDelete(this.props.idea.id)}
-
-handleClick = () => {this.props.onClick(this.props.idea.id)}
+	handleDelete = () => {this.props.onDelete(this.props.idea.id)}
 
 	render () {
 		return(
-			<div className="tile" onClick={this.props.onClick} style={{background: this.state.color}}>
+			<div className="tile">
 			<span className="deleteButton" onClick={this.handleDelete}> x </span>
-			<form onBlur={this.handleBlur}>
-
-			<input style={{fontSize: "16px", fontWeight: "bold"}}className='input' type="text" name="title" placeholder='Enter a Title'
-			value={this.state.title} onChange={this.handleInput} 
-			ref={this.props.titleRef} onClick={this.handleColor} onClick={this.handleClick} />
-
-			<textarea style={{fontSize: "14px"}}className='input' name="body" placeholder='Describe your idea'
-			value={this.state.body} onChange={this.handleInput} onClick={this.handleClick} > </textarea>
-
-      		</form>
-      		</div>
+  			<h4 onClick={this.handleClick}> {this.props.idea.title}</h4>
+  			<p onClick={this.handleClick}> {this.props.idea.body}</p>
+   			</div>
    		)
 	}
 }

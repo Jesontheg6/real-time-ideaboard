@@ -14,10 +14,9 @@ class App extends Component {
       <div className="App">
         <Route path="/" component={AppHeader}/>
         <header className="App-header">
+        <h1> Idea Board </h1>
         </header>
         <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-    
         <Route exact path="/" component={IdeasContainer} />
       </div>
       </BrowserRouter>

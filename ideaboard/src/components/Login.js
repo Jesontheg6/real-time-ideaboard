@@ -1,7 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
 
-
 export default class Login extends React.Component {
 
 	handleLogin = (e) => {
@@ -27,7 +26,6 @@ export default class Login extends React.Component {
 
 	render () {
 		return (
-
 			<div>
 				<h2> Sign in </h2>
 				<form className= "signInForm" onSubmit={this.handleLogin}>
