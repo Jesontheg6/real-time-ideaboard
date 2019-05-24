@@ -1,5 +1,6 @@
 module Api::V1
   class IdeasController < ApplicationController
+<<<<<<< HEAD
     before_action :authenticate_user! 
 
   	def index
@@ -44,5 +45,12 @@ module Api::V1
 >>>>>>> refs/remotes/origin/master
 		end
 	end
+=======
+   	 def index
+     	 @ideas = Idea.all
+      	render json: @ideas
+    	end
+	end 
+>>>>>>> e4c4851... added connector
 end 
 

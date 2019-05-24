@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+.App {
+  text-align: center;
+}
+
+>>>>>>> e4c4851... added connector
 .App-header {
   min-height: 30vh;
   display: flex;
@@ -8,6 +15,7 @@
   color: black;
 }
 
+<<<<<<< HEAD
 
 .tile {
   height: 250px;
@@ -99,3 +107,8 @@ textarea {
 	float: right;
 }
 
+=======
+.App-link {
+  color: #61dafb;
+}
+>>>>>>> e4c4851... added connector

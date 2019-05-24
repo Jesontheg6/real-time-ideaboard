@@ -34,10 +34,14 @@ module IdeaboardApi
      config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins 'http://localhost:3000'
+<<<<<<< HEAD
         resource '*', 
         headers: :any, 
         :expose => ['access-token', 'expiry', 'token-type', 'uid', 'client'],
         methods: [:get, :post, :patch,:put, :delete, :options]
+=======
+        resource '*', headers: :any, methods: [:get, :post,  :put, :delete, :options]
+>>>>>>> e4c4851... added connector
       end
     end
   end

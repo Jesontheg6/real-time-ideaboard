@@ -11,14 +11,19 @@
 # It's strongly recommended that you check this file into your version control system.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_03_27_040535) do
 =======
 ActiveRecord::Schema.define(version: 2019_03_19_053911) do
 >>>>>>> refs/remotes/origin/master
+=======
+ActiveRecord::Schema.define(version: 2019_03_05_112136) do
+>>>>>>> e4c4851... added connector
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   create_table "boards", force: :cascade do |t|
     t.string "boardtitle"
@@ -32,11 +37,14 @@ ActiveRecord::Schema.define(version: 2019_03_19_053911) do
 
 =======
 >>>>>>> refs/remotes/origin/master
+=======
+>>>>>>> e4c4851... added connector
   create_table "ideas", force: :cascade do |t|
     t.string "title"
     t.string "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+<<<<<<< HEAD
     t.bigint "user_id"
 <<<<<<< HEAD
     t.string "color"
@@ -87,4 +95,8 @@ ActiveRecord::Schema.define(version: 2019_03_19_053911) do
 =======
   add_foreign_key "ideas", "users"
 >>>>>>> refs/remotes/origin/master
+=======
+  end
+
+>>>>>>> e4c4851... added connector
 end

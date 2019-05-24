@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from 'react'
 import axios from 'axios' 
 import Idea from './Idea'
@@ -10,11 +11,16 @@ import BoardTitle from './BoardTitle'
 import ActionCable from 'actioncable'
 import IdeaForm from './IdeaForm'
 
+=======
+import React, { Component } from 'react';
+import axios from 'axios' 
+>>>>>>> e4c4851... added connector
 
 class IdeasContainer extends Component {
   constructor(props) {
     super(props)
     this.state = {
+<<<<<<< HEAD
       ideas: [] ,
       editingIdeaID: null,
       editingTitleID: null,
@@ -64,10 +70,22 @@ class IdeasContainer extends Component {
       // window.alert(JSON.stringify(response.data))
       this.setState({ideas: ideas, editingIdeaID: response.data.id})
       // window.alert(response.data.id)
+=======
+      ideas: []
+    } 
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:3001/api/v1/ideas.json')
+    .then(response => {
+      console.log(response)
+      this.setState({ideas: response.data})
+>>>>>>> e4c4851... added connector
     })
     .catch(error => console.log(error))
   }
 
+<<<<<<< HEAD
     handleReceiveNewIdea = ({ idea }) => {
       if (idea !== this.state.ideas) {
         this.setState({ idea })
@@ -157,6 +175,22 @@ class IdeasContainer extends Component {
           </div>
       );
    }
+=======
+  render() {
+    return (
+      <div>
+        {this.state.ideas.map((idea) => {
+          return (
+            <div className="tile" key={idea.id}>
+            <h4> {idea.title}</h4>
+            <p>{idea.body}</p>
+            </div>
+            )
+        })}
+      </div>
+    );
+  }
+>>>>>>> e4c4851... added connector
 }
 
 export default IdeasContainer
